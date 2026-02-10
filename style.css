@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: Arial, sans-serif; 
+}
+
+.student{
+    margin: 4px 0; 
+}
+
+.hired{
+    color: green; 
+}
+
+.applicable{
+    color: orange; 
+}
+
+.not-applicable{
+    color: red; 
+}
