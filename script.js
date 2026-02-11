@@ -42,16 +42,12 @@ const result = studentsWithStatus.reduce((count, student) => {
 
 
 const studentList = document.getElementById('studentList')
-studentList.innerHTML = ""
 
-const counts = document.getElementById('counts')
-studentList.innerHTML = ""
+function renderStudents(list){
+    studentList.innerHTML=""
 
-function renderStudents(list) {
-    studentList.innerHTML = "";
-
-    list.forEach(student => {
-        const div = document.createElement("div");
+    list.forEach(student=>{
+        const div = document.createElement("div")
 
         div.textContent = `${student.name} (${student.cgpa}) - ${student.hiring}`;
 
@@ -59,6 +55,17 @@ function renderStudents(list) {
         div.classList.add(student.hiring);
 
         studentList.appendChild(div);
-    });
+    })
 }
 renderStudents(studentsWithStatus);
+
+const counts = document.getElementById('counts')
+function renderCounts(result){
+    counts.innerHTML="";
+
+    counts.textContent = `${result}`;
+
+
+    counts.appendChild()
+}
+renderCounts(result);
