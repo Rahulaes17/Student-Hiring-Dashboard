@@ -19,35 +19,31 @@ function addHiringStatus(students) {
         return { ...student, hiring };
     });
 }
-const studentsWithStatus = addHiringStatus(students)
-console.log(studentsWithStatus)
+
+const studentsWithStatus = addHiringStatus(students);
 
 const result = studentsWithStatus.reduce((count, student) => {
     if (student.hiring === "hired") {
-        count.hired++
+        count.hired++;
+    } else if (student.hiring === "applicable") {
+        count.applicable++;
+    } else {
+        count.notApplicable++;
     }
-    else if (student.hiring === "applicable") {
-        count.applicable++
-    }
-    else {
-        count.notApplicable++
-    }
-
-    return count
+    return count;
 }, {
     hired: 0,
     applicable: 0,
     notApplicable: 0,
-})
+});
 
+const studentList = document.getElementById('studentList');
 
-const studentList = document.getElementById('studentList')
+function renderStudents(list) {
+    studentList.innerHTML = "";
 
-function renderStudents(list){
-    studentList.innerHTML=""
-
-    list.forEach(student=>{
-        const div = document.createElement("div")
+    list.forEach(student => {
+        const div = document.createElement("div");
 
         div.textContent = `${student.name} (${student.cgpa}) - ${student.hiring}`;
 
@@ -55,17 +51,51 @@ function renderStudents(list){
         div.classList.add(student.hiring);
 
         studentList.appendChild(div);
-    })
+    });
 }
+
 renderStudents(studentsWithStatus);
 
-const counts = document.getElementById('counts')
-function renderCounts(result){
-    counts.innerHTML="";
+const countsEl = document.getElementById('counts');
 
-    counts.textContent = `${result}`;
-
-
-    counts.appendChild()
+function renderCounts(result) {
+    countsEl.textContent =
+        `Hired: ${result.hired} | Applicable: ${result.applicable} | Not Applicable: ${result.notApplicable}`;
 }
+
 renderCounts(result);
+
+const hiredBtn = document.getElementById("hiredBtn");
+
+hiredBtn.addEventListener("click", function () {
+    const hiredStudents = studentsWithStatus.filter(student =>
+        student.hiring === "hired"
+    );
+
+    renderStudents(hiredStudents);
+});
+
+
+const allBtn = document.getElementById("allBtn");
+const applicableBtn = document.getElementById("applicableBtn");
+const notApplicableBtn = document.getElementById("notApplicableBtn");
+
+allBtn.addEventListener("click", function () {
+    renderStudents(studentsWithStatus);
+});
+
+applicableBtn.addEventListener("click", function () {
+    const applicableStudents = studentsWithStatus.filter(student =>
+        student.hiring === "applicable"
+    );
+
+    renderStudents(applicableStudents);
+});
+
+notApplicableBtn.addEventListener("click", function () {
+    const notApplicableStudents = studentsWithStatus.filter(student =>
+        student.hiring === "not-applicable"
+    );
+
+    renderStudents(notApplicableStudents);
+});
