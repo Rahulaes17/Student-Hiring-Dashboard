@@ -19,7 +19,6 @@ function addHiringStatus(students) {
         return { ...student, hiring };
     });
 }
-
 const studentsWithStatus = addHiringStatus(students);
 
 const result = studentsWithStatus.reduce((count, student) => {
@@ -38,7 +37,6 @@ const result = studentsWithStatus.reduce((count, student) => {
 });
 
 const studentList = document.getElementById('studentList');
-
 function renderStudents(list) {
     studentList.innerHTML = "";
 
@@ -53,49 +51,60 @@ function renderStudents(list) {
         studentList.appendChild(div);
     });
 }
-
 renderStudents(studentsWithStatus);
 
-const countsEl = document.getElementById('counts');
 
+const countsEl = document.getElementById('counts');
 function renderCounts(result) {
     countsEl.textContent =
-        `Hired: ${result.hired} | Applicable: ${result.applicable} | Not Applicable: ${result.notApplicable}`;
+        `Hired: ${result.hired || 0} | ` +
+        `Applicable: ${result.applicable || 0} | ` +
+        `Not Applicable: ${result["not-applicable"] || 0}`;
 }
-
 renderCounts(result);
 
-const hiredBtn = document.getElementById("hiredBtn");
 
-hiredBtn.addEventListener("click", function () {
-    const hiredStudents = studentsWithStatus.filter(student =>
-        student.hiring === "hired"
-    );
 
-    renderStudents(hiredStudents);
-});
+function filterByStatus(status) {
+    let list;
+    if (status === "all") {
+        list = studentsWithStatus
+    }
+    else {
+        list = studentsWithStatus.filter(student => {
+            return student.hiring === status
+        })
+    }
 
+    renderStudents(list);
+
+    const newCount = list.reduce((count, student) => {
+        count[student.hiring] = (count[student.hiring] || 0) + 1;
+        return count;
+    }, {});
+    renderCounts(newCount);
+}
 
 const allBtn = document.getElementById("allBtn");
-const applicableBtn = document.getElementById("applicableBtn");
-const notApplicableBtn = document.getElementById("notApplicableBtn");
-
 allBtn.addEventListener("click", function () {
-    renderStudents(studentsWithStatus);
+    filterByStatus("all")
 });
 
+const hiredBtn = document.getElementById("hiredBtn");
+hiredBtn.addEventListener("click", function () {
+    filterByStatus("hired");
+})
+
+
+const applicableBtn = document.getElementById("applicableBtn");
 applicableBtn.addEventListener("click", function () {
-    const applicableStudents = studentsWithStatus.filter(student =>
-        student.hiring === "applicable"
-    );
-
-    renderStudents(applicableStudents);
+    filterByStatus("applicable");
 });
 
+
+const notApplicableBtn = document.getElementById("notApplicableBtn");
 notApplicableBtn.addEventListener("click", function () {
-    const notApplicableStudents = studentsWithStatus.filter(student =>
-        student.hiring === "not-applicable"
-    );
-
-    renderStudents(notApplicableStudents);
+    filterByStatus("not-applicable");
 });
+
+
