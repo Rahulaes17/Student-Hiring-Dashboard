@@ -9,6 +9,8 @@ const students = [
     { name: "Prateek", rollNo: 46, cgpa: 9.10 }
 ];
 
+const heading = document.querySelector("h2");
+
 function addHiringStatus(students) {
     return students.map(student => {
         let hiring;
@@ -20,21 +22,6 @@ function addHiringStatus(students) {
     });
 }
 const studentsWithStatus = addHiringStatus(students);
-
-const result = studentsWithStatus.reduce((count, student) => {
-    if (student.hiring === "hired") {
-        count.hired++;
-    } else if (student.hiring === "applicable") {
-        count.applicable++;
-    } else {
-        count.notApplicable++;
-    }
-    return count;
-}, {
-    hired: 0,
-    applicable: 0,
-    notApplicable: 0,
-});
 
 const studentList = document.getElementById('studentList');
 function renderStudents(list) {
@@ -51,7 +38,7 @@ function renderStudents(list) {
         studentList.appendChild(div);
     });
 }
-renderStudents(studentsWithStatus);
+updateUI(studentsWithStatus, "all");
 
 
 const countsEl = document.getElementById('counts');
@@ -61,29 +48,44 @@ function renderCounts(result) {
         `Applicable: ${result.applicable || 0} | ` +
         `Not Applicable: ${result["not-applicable"] || 0}`;
 }
-renderCounts(result);
+updateUI(studentsWithStatus, "all");
 
-
-
-function filterByStatus(status) {
-    let list;
-    if (status === "all") {
-        list = studentsWithStatus
-    }
-    else {
-        list = studentsWithStatus.filter(student => {
-            return student.hiring === status
-        })
-    }
+function updateUI(list, status) {
 
     renderStudents(list);
 
-    const newCount = list.reduce((count, student) => {
+    const counts = list.reduce((count, student) => {
         count[student.hiring] = (count[student.hiring] || 0) + 1;
         return count;
     }, {});
-    renderCounts(newCount);
+
+    renderCounts(counts);
+
+    if (status === "all") {
+        heading.textContent = "Student Hiring Dashboard";
+    } else {
+        const formatted =
+            status.charAt(0).toUpperCase() + status.slice(1);
+
+        heading.textContent = `Showing: ${formatted} Students`;
+    }
 }
+
+function filterByStatus(status) {
+
+    let list;
+
+    if (status === "all") {
+        list = studentsWithStatus;
+    } else {
+        list = studentsWithStatus.filter(student =>
+            student.hiring === status
+        );
+    }
+
+    updateUI(list, status);
+}
+
 
 const allBtn = document.getElementById("allBtn");
 allBtn.addEventListener("click", function () {
