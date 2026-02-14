@@ -11,20 +11,23 @@
 </head>
 
 <body>
-    <h2>Student Hiring Dashboard</h2>
+    <div class="container">
+        <div class="header">
+            <h2>Student Hiring Dashboard</h2>
+            <div class="filters">
+                <button id="allBtn">All</button>
+                <button id="hiredBtn">Hired</button>
+                <button id="applicableBtn">Applicable</button>
+                <button id="notApplicableBtn">Not Applicable</button>
+            </div>
+        </div>
 
-    <div>
-        <button id="allBtn">All</button>
-        <button id="hiredBtn">Hired</button>
-        <button id="applicableBtn">Applicable</button>
-        <button id="notApplicableBtn">Not Applicable</button>
+        <h3>Counts</h3>
+        <p id="counts"></p>
+
+        <h3>Students</h3>
+        <div id="studentList"></div>
     </div>
-
-    <h3>Counts</h3>
-    <p id="counts"></p>
-
-    <h3>Students</h3>
-    <div id="studentList"></div>
 </body>
 <script src="script.js"></script>
 

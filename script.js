@@ -30,7 +30,12 @@ function renderStudents(list) {
     list.forEach(student => {
         const div = document.createElement("div");
 
-        div.textContent = `${student.name} (${student.cgpa}) - ${student.hiring}`;
+        div.innerHTML = `
+    <strong>${student.name}</strong>
+    <span style="float:right">${student.cgpa}</span>
+    <br>
+    <small style="text-transform: capitalize;">${student.hiring.replace("-", " ")}</small>
+`;
 
         div.classList.add("student");
         div.classList.add(student.hiring);
@@ -38,7 +43,6 @@ function renderStudents(list) {
         studentList.appendChild(div);
     });
 }
-updateUI(studentsWithStatus, "all");
 
 
 const countsEl = document.getElementById('counts');
@@ -48,7 +52,6 @@ function renderCounts(result) {
         `Applicable: ${result.applicable || 0} | ` +
         `Not Applicable: ${result["not-applicable"] || 0}`;
 }
-updateUI(studentsWithStatus, "all");
 
 function updateUI(list, status) {
 
@@ -109,4 +112,4 @@ notApplicableBtn.addEventListener("click", function () {
     filterByStatus("not-applicable");
 });
 
-
+updateUI(studentsWithStatus, "all");
